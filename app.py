@@ -23,93 +23,137 @@ def save_records(records):
         print(f"Error saving records: {e}")
 
 
+# ─── Helper Functions ─────────────────────────────────────────────
+
+def get_roll_no(record):
+    """Retrieve Roll Number from record (supports 'roll_no' and 'id')."""
+    return record.get("roll_no", record.get("id"))
+
+
+def format_student(r):
+    """Format student details as a single string."""
+    roll = get_roll_no(r)
+    return f"Roll No: {roll:<5} | Name: {r['name']:<16} | Age: {r['age']:<3} | Email: {r['email']:<26} | Phone: {r['phone']}"
+
+
 # ─── CRUD Functions ──────────────────────────────────────────────
 
 def add_record(records):
-    """Add a new record by prompting the user for details."""
-    print("\n--- Add Record ---")
+    """Add a new student record with input validation and duplicate check."""
+    print("\n--- Add Student Record ---")
+    roll_no_input = input("Enter Roll Number: ").strip()
+    if not roll_no_input:
+        print("Error: Roll Number cannot be empty.")
+        return
+
     try:
-        name = input("Enter name: ").strip()
-        if not name:
-            print("Name cannot be empty.")
-            return
-
-        age = int(input("Enter age: "))
-
-        email = input("Enter email: ").strip()
-        phone = input("Enter phone: ").strip()
-
-        # Auto-generate ID
-        new_id = max((r["id"] for r in records), default=0) + 1
-
-        records.append({
-            "id": new_id,
-            "name": name,
-            "age": age,
-            "email": email,
-            "phone": phone
-        })
-        save_records(records)
-        print(f"Record added successfully. (ID: {new_id})")
-
+        roll_no = int(roll_no_input)
     except ValueError:
-        print("Invalid input. Age must be a number.")
+        print("Error: Invalid input! Roll Number must be an integer.")
+        return
+
+    # Check for duplicate Roll Number
+    if any(get_roll_no(r) == roll_no for r in records):
+        print(f"Error: A student with Roll Number {roll_no} already exists.")
+        return
+
+    name = input("Enter Name: ").strip()
+    if not name:
+        print("Error: Name cannot be empty.")
+        return
+
+    age_input = input("Enter Age: ").strip()
+    if not age_input:
+        print("Error: Age cannot be empty.")
+        return
+
+    try:
+        age = int(age_input)
+    except ValueError:
+        print("Error: Invalid input! Age must be a number.")
+        return
+
+    email = input("Enter Email: ").strip()
+    phone = input("Enter Phone: ").strip()
+
+    records.append({
+        "roll_no": roll_no,
+        "id": roll_no,
+        "name": name,
+        "age": age,
+        "email": email,
+        "phone": phone
+    })
+    save_records(records)
+    print(f"\nStudent record added successfully! (Roll No: {roll_no})")
 
 
 def view_records(records):
-    """Display all records."""
-    print("\n--- All Records ---")
+    """Display all student records."""
+    print("\n--- All Student Records ---")
     if not records:
-        print("No records found.")
+        print("No student records found.")
         return
 
+    print("-" * 80)
     for r in records:
-        print(f"ID: {r['id']}  |  Name: {r['name']}  |  Age: {r['age']}  |  Email: {r['email']}  |  Phone: {r['phone']}")
+        print(format_student(r))
+    print("-" * 80)
+    print(f"Total Students: {len(records)}")
 
 
 def search_record(records):
-    """Search records by name (case-insensitive partial match)."""
-    print("\n--- Search Record ---")
+    """Search records by Roll Number or Name (case-insensitive partial match)."""
+    print("\n--- Search Student Record ---")
     if not records:
-        print("No records to search.")
+        print("No student records to search.")
         return
 
-    term = input("Enter name to search: ").strip().lower()
-    matches = [r for r in records if term in r["name"].lower()]
+    term = input("Enter Name or Roll Number to search: ").strip()
+    if not term:
+        print("Search term cannot be empty.")
+        return
+
+    term_lower = term.lower()
+    matches = [
+        r for r in records
+        if term_lower in r["name"].lower() or str(get_roll_no(r)) == term
+    ]
 
     if matches:
-        print(f"Found {len(matches)} result(s):")
+        print(f"\nFound {len(matches)} matching result(s):")
+        print("-" * 80)
         for r in matches:
-            print(f"ID: {r['id']}  |  Name: {r['name']}  |  Age: {r['age']}  |  Email: {r['email']}  |  Phone: {r['phone']}")
+            print(format_student(r))
+        print("-" * 80)
     else:
-        print("No matching records found.")
+        print(f"No student record found matching '{term}'.")
 
 
 def update_record(records):
-    """Update a record by ID. Press Enter to keep current value."""
-    print("\n--- Update Record ---")
+    """Update a student record by Roll Number. Press Enter to keep current value."""
+    print("\n--- Update Student Record ---")
     if not records:
-        print("No records to update.")
+        print("No student records to update.")
         return
 
     try:
-        record_id = int(input("Enter ID of record to update: "))
+        roll_no = int(input("Enter Roll Number of student to update: "))
     except ValueError:
-        print("Invalid ID.")
+        print("Invalid input: Roll Number must be an integer.")
         return
 
-    # Find the record
     target = None
     for r in records:
-        if r["id"] == record_id:
+        if get_roll_no(r) == roll_no:
             target = r
             break
 
     if target is None:
-        print(f"No record found with ID {record_id}.")
+        print(f"No student found with Roll Number {roll_no}.")
         return
 
-    print(f"Current: Name={target['name']}, Age={target['age']}, Email={target['email']}, Phone={target['phone']}")
+    print(f"\nCurrent Details: {format_student(target)}")
     print("Press Enter to keep current value.\n")
 
     name = input(f"Name [{target['name']}]: ").strip()
@@ -121,7 +165,7 @@ def update_record(records):
         try:
             target["age"] = int(age_input)
         except ValueError:
-            print("Invalid age. Keeping current value.")
+            print("Invalid age entered. Keeping current value.")
 
     email = input(f"Email [{target['email']}]: ").strip()
     if email:
@@ -132,40 +176,39 @@ def update_record(records):
         target["phone"] = phone
 
     save_records(records)
-    print("Record updated successfully.")
+    print("\nStudent record updated successfully!")
 
 
 def delete_record(records):
-    """Delete a record by ID with confirmation."""
-    print("\n--- Delete Record ---")
+    """Delete a student record by Roll Number with user confirmation."""
+    print("\n--- Delete Student Record ---")
     if not records:
-        print("No records to delete.")
+        print("No student records to delete.")
         return
 
     try:
-        record_id = int(input("Enter ID of record to delete: "))
+        roll_no = int(input("Enter Roll Number of student to delete: "))
     except ValueError:
-        print("Invalid ID.")
+        print("Invalid input: Roll Number must be an integer.")
         return
 
-    # Find the record
     target = None
     for r in records:
-        if r["id"] == record_id:
+        if get_roll_no(r) == roll_no:
             target = r
             break
 
     if target is None:
-        print(f"No record found with ID {record_id}.")
+        print(f"No student found with Roll Number {roll_no}.")
         return
 
-    print(f"Record: Name={target['name']}, Age={target['age']}, Email={target['email']}, Phone={target['phone']}")
-    confirm = input("Are you sure you want to delete? (y/n): ").strip().lower()
+    print(f"\nTarget Record: {format_student(target)}")
+    confirm = input("Are you sure you want to delete this record? (y/n): ").strip().lower()
 
     if confirm == "y":
         records.remove(target)
         save_records(records)
-        print("Record deleted successfully.")
+        print("\nStudent record deleted successfully!")
     else:
         print("Deletion cancelled.")
 
@@ -173,18 +216,18 @@ def delete_record(records):
 # ─── Main Menu ───────────────────────────────────────────────────
 
 def main():
-    """Main menu loop."""
+    """Main menu loop for Student Management System."""
     records = load_records()
 
     while True:
-        print("\n===== Record Management System =====")
-        print("1. Add Record")
-        print("2. View All Records")
-        print("3. Search Record")
-        print("4. Update Record")
-        print("5. Delete Record")
+        print("\n===== Student Management System =====")
+        print("1. Add Student Record")
+        print("2. View All Student Records")
+        print("3. Search Student Record")
+        print("4. Update Student Record")
+        print("5. Delete Student Record")
         print("6. Exit")
-        print("====================================")
+        print("=====================================")
 
         choice = input("Enter your choice (1-6): ").strip()
 
@@ -199,10 +242,10 @@ def main():
         elif choice == "5":
             delete_record(records)
         elif choice == "6":
-            print("Goodbye!")
+            print("\nThank you for using Student Management System. Goodbye!")
             break
         else:
-            print("Invalid choice. Please enter 1-6.")
+            print("Invalid choice. Please enter a number between 1 and 6.")
 
 
 if __name__ == "__main__":

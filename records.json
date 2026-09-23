@@ -1,9 +1,42 @@
 [
     {
-        "id": 1,
-        "name": "Shubham",
+        "roll_no": 101,
+        "id": 101,
+        "name": "Shubham Shah",
         "age": 22,
         "email": "shubhammshah20@gmail.com",
         "phone": "7208410291"
+    },
+    {
+        "roll_no": 102,
+        "id": 102,
+        "name": "Priya Sharma",
+        "age": 21,
+        "email": "priya.sharma@example.com",
+        "phone": "9820123456"
+    },
+    {
+        "roll_no": 103,
+        "id": 103,
+        "name": "Aarav Patel",
+        "age": 22,
+        "email": "aarav.patel@example.com",
+        "phone": "9876543210"
+    },
+    {
+        "roll_no": 104,
+        "id": 104,
+        "name": "Ananya Verma",
+        "age": 20,
+        "email": "ananya.verma@example.com",
+        "phone": "9123456780"
+    },
+    {
+        "roll_no": 105,
+        "id": 105,
+        "name": "Rohan Kulkarni",
+        "age": 23,
+        "email": "rohan.k@example.com",
+        "phone": "9988776655"
     }
 ]

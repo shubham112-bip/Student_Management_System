@@ -1,34 +1,34 @@
 # Student Management System
 
-A console-based Record Management Application built with Python that allows users to manage student records through a menu-driven interface. This project demonstrates core Python concepts including data types, conditional statements, loops, functions, exception handling, and file I/O.
+A console-based Student Record Management Application built with Python that allows users to manage student records through an intuitive menu-driven interface. This project demonstrates core Python concepts including data types and variables, conditional statements and loops, functions, exception handling, and file I/O.
 
 ## Project Description
 
-This application provides a fully functional command-line interface for managing student records. Users can perform all CRUD (Create, Read, Update, Delete) operations on records that are persistently stored in a JSON file. The application is designed with a clean, modular architecture using well-defined functions for each operation.
+This application provides a fully functional command-line interface for managing student records. Users can perform complete CRUD (Create, Read, Update, Delete) operations on records that are persistently stored in a JSON file (`records.json`). The application is designed with a clean, modular architecture using functions for each operation and handles user errors gracefully.
 
 ## Features
 
-- **Add Record** — Add a new student record with auto-generated ID, name, age, email, and phone number
-- **View All Records** — Display all stored records in a formatted table
-- **Search Record** — Search records by name using case-insensitive partial matching
-- **Update Record** — Update any field of an existing record by ID (press Enter to keep current value)
-- **Delete Record** — Delete a record by ID with confirmation prompt
-- **Persistent Storage** — All records are saved to a JSON file, so data is retained between sessions
-- **Input Validation** — Robust exception handling for invalid inputs (non-numeric age, empty names, invalid IDs)
-- **Menu-Driven Interface** — Simple and intuitive numbered menu for navigation
+- **Add Student Record** — Add a new student record with Roll Number, Name, Age, Email, and Phone Number (with duplicate Roll Number check)
+- **View All Student Records** — Display all stored student records in a neatly formatted tabular view
+- **Search Student Record** — Search records by Student Name (case-insensitive partial match) or Roll Number
+- **Update Student Record** — Update any field of an existing student by Roll Number (press Enter to retain current values)
+- **Delete Student Record** — Delete a student record by Roll Number with confirmation prompt
+- **Persistent Storage** — All records are saved to `records.json`, ensuring data is preserved between application restarts
+- **Input Validation & Exception Handling** — Handles invalid data types (e.g., entering non-numeric characters for Roll Number or Age) and runtime/file errors
+- **Menu-Driven Interface** — Clear, numbered interactive menu for easy navigation
 
 ## Technologies & Concepts Used
 
-| Technology / Concept         | Usage in Project                                                |
-|-----------------------------|-----------------------------------------------------------------|
-| **Python 3**                | Core programming language                                       |
-| **JSON module**             | File I/O for reading/writing records to `records.json`          |
-| **Data Types & Variables**  | Strings, integers, lists, dictionaries used for record storage  |
-| **Conditional Statements**  | Menu selection logic, input validation, confirmation prompts    |
-| **Loops**                   | `while True` for main menu loop, `for` loops for record search  |
-| **Functions**               | Modular design — each operation is a separate function          |
-| **Exception Handling**      | `try/except` blocks for `ValueError`, `FileNotFoundError`, etc. |
-| **File I/O**                | Persistent storage using JSON file read/write operations        |
+| Technology / Concept         | Usage in Project                                                             |
+|-----------------------------|------------------------------------------------------------------------------|
+| **Python 3**                | Core programming language                                                    |
+| **JSON Module**             | File I/O for reading and writing student records in `records.json`           |
+| **Data Types & Variables**  | Integers (Roll Number, Age), Strings (Name, Email, Phone), Lists & Dicts     |
+| **Conditional Statements**  | Menu routing, input validation checks, duplicate checks, confirmation prompts|
+| **Loops**                   | `while True` for continuous menu loop, `for` loops for search & display      |
+| **Functions**               | Modular design (`load_records`, `save_records`, `add_record`, `view_records`, `search_record`, `update_record`, `delete_record`) |
+| **Exception Handling**      | `try/except` catching `ValueError`, `FileNotFoundError`, `json.JSONDecodeError` |
+| **File I/O**                | Persistent storage across sessions with JSON read/write operations           |
 
 ## How to Run the Application
 
@@ -54,96 +54,173 @@ This application provides a fully functional command-line interface for managing
 
 3. **Follow the on-screen menu** to add, view, search, update, or delete records.
 
-## Sample Input/Output
+---
 
-### Main Menu
+## Required Screenshots & Sample Walkthrough
+
+### Screenshot 1: Application Main Menu
 ```
-===== Record Management System =====
-1. Add Record
-2. View All Records
-3. Search Record
-4. Update Record
-5. Delete Record
+===== Student Management System =====
+1. Add Student Record
+2. View All Student Records
+3. Search Student Record
+4. Update Student Record
+5. Delete Student Record
 6. Exit
-====================================
+=====================================
 Enter your choice (1-6):
 ```
 
-### Adding a Record
+---
+
+### Screenshot 2: Adding a New Student Record Successfully
 ```
---- Add Record ---
-Enter name: Shubham
-Enter age: 22
-Enter email: shubhammshah20@gmail.com
-Enter phone: 7208410291
-Record added successfully. (ID: 1)
+Enter your choice (1-6): 1
+
+--- Add Student Record ---
+Enter Roll Number: 106
+Enter Name: Tanya Singh
+Enter Age: 21
+Enter Email: tanya.singh@example.com
+Enter Phone: 9811223344
+
+Student record added successfully! (Roll No: 106)
 ```
 
-### Viewing All Records
+---
+
+### Screenshot 3: Viewing All Student Records (Minimum 5 Records)
 ```
---- All Records ---
-ID: 1  |  Name: Shubham  |  Age: 22  |  Email: shubhammshah20@gmail.com  |  Phone: 7208410291
+Enter your choice (1-6): 2
+
+--- All Student Records ---
+--------------------------------------------------------------------------------
+Roll No: 101   | Name: Shubham Shah     | Age: 22  | Email: shubhammshah20@gmail.com   | Phone: 7208410291
+Roll No: 102   | Name: Priya Sharma     | Age: 21  | Email: priya.sharma@example.com   | Phone: 9820123456
+Roll No: 103   | Name: Aarav Patel      | Age: 22  | Email: aarav.patel@example.com    | Phone: 9876543210
+Roll No: 104   | Name: Ananya Verma     | Age: 20  | Email: ananya.verma@example.com   | Phone: 9123456780
+Roll No: 105   | Name: Rohan Kulkarni   | Age: 23  | Email: rohan.k@example.com        | Phone: 9988776655
+--------------------------------------------------------------------------------
+Total Students: 5
 ```
 
-### Searching a Record
-```
---- Search Record ---
-Enter name to search: shubham
-Found 1 result(s):
-ID: 1  |  Name: Shubham  |  Age: 22  |  Email: shubhammshah20@gmail.com  |  Phone: 7208410291
-```
+---
 
-### Updating a Record
+### Screenshot 4: Updating or Deleting a Student Record
+
+#### Updating a Student Record:
 ```
---- Update Record ---
-Enter ID of record to update: 1
-Current: Name=Shubham, Age=22, Email=shubhammshah20@gmail.com, Phone=7208410291
+Enter your choice (1-6): 4
+
+--- Update Student Record ---
+Enter Roll Number of student to update: 105
+
+Current Details: Roll No: 105   | Name: Rohan Kulkarni   | Age: 23  | Email: rohan.k@example.com        | Phone: 9988776655
 Press Enter to keep current value.
 
-Name [Shubham]:
-Age [22]: 23
-Email [shubhammshah20@gmail.com]:
-Phone [7208410291]:
-Record updated successfully.
+Name [Rohan Kulkarni]: 
+Age [23]: 24
+Email [rohan.k@example.com]: 
+Phone [9988776655]: 
+
+Student record updated successfully!
 ```
 
-### Deleting a Record
+#### Deleting a Student Record:
 ```
---- Delete Record ---
-Enter ID of record to delete: 1
-Record: Name=Shubham, Age=22, Email=shubhammshah20@gmail.com, Phone=7208410291
-Are you sure you want to delete? (y/n): y
-Record deleted successfully.
+Enter your choice (1-6): 5
+
+--- Delete Student Record ---
+Enter Roll Number of student to delete: 105
+
+Target Record: Roll No: 105   | Name: Rohan Kulkarni   | Age: 23  | Email: rohan.k@example.com        | Phone: 9988776655
+Are you sure you want to delete this record? (y/n): y
+
+Student record deleted successfully!
 ```
+
+---
+
+### Screenshot 5: Error Handling (Entering Invalid Data Type for a Roll Number)
+```
+Enter your choice (1-6): 1
+
+--- Add Student Record ---
+Enter Roll Number: abc
+Error: Invalid input! Roll Number must be an integer.
+```
+*Or during Update/Delete operations:*
+```
+Enter your choice (1-6): 4
+
+--- Update Student Record ---
+Enter Roll Number of student to update: xyz
+Invalid input: Roll Number must be an integer.
+```
+
+---
 
 ## Project Structure
 
 ```
 Student_Management_System/
 ├── app.py              # Main application source code
-├── records.json        # Data file storing student records (auto-created)
-└── README.md           # Project documentation
+├── records.json        # Data file storing student records (JSON format)
+└── README.md           # Assignment documentation & walkthrough
 ```
 
-## Data File
+## Data File (`records.json`)
 
-The application uses **`records.json`** to store all records. This file is automatically created when the first record is added. Records are stored as a JSON array of objects:
+The application uses **`records.json`** to store all student records persistently. The initial file includes 5 sample student records:
 
 ```json
 [
     {
-        "id": 1,
-        "name": "Shubham",
+        "roll_no": 101,
+        "id": 101,
+        "name": "Shubham Shah",
         "age": 22,
         "email": "shubhammshah20@gmail.com",
         "phone": "7208410291"
+    },
+    {
+        "roll_no": 102,
+        "id": 102,
+        "name": "Priya Sharma",
+        "age": 21,
+        "email": "priya.sharma@example.com",
+        "phone": "9820123456"
+    },
+    {
+        "roll_no": 103,
+        "id": 103,
+        "name": "Aarav Patel",
+        "age": 22,
+        "email": "aarav.patel@example.com",
+        "phone": "9876543210"
+    },
+    {
+        "roll_no": 104,
+        "id": 104,
+        "name": "Ananya Verma",
+        "age": 20,
+        "email": "ananya.verma@example.com",
+        "phone": "9123456780"
+    },
+    {
+        "roll_no": 105,
+        "id": 105,
+        "name": "Rohan Kulkarni",
+        "age": 23,
+        "email": "rohan.k@example.com",
+        "phone": "9988776655"
     }
 ]
 ```
 
 ## GitHub Repository
 
-- **Repository:** [Student_Management_System](https://github.com/shubham112-bip/Student_Management_System)
+- **Repository:** [https://github.com/shubham112-bip/Student_Management_System](https://github.com/shubham112-bip/Student_Management_System)
 - **Author:** Shubham Shah
 - **Language:** Python 3
 
