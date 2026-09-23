@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+.agents/
+.agent/
+.gemini/
+.gsd/
+adapters/
+scripts/
+data/
+model_capabilities.yaml
+VERSION
+GSD-STYLE.md
+PROJECT_RULES.md
+Plan.md
+.DS_Store
